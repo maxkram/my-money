@@ -1,50 +1,47 @@
-import { useState, useEffect } from 'react';
-import { projectAuth } from '../firebase/config';
-import { useAuthContext } from './useAuthContext';
+import { useState, useEffect } from 'react'
+import { projectAuth } from '../firebase/config'
+import { useAuthContext } from './useAuthContext'
 
 export const useSignup = () => {
-    const [isCancelled, setIsCancelled] = useState(false);
-    const [error, setError] = useState(null);
-    const [isPending, setIsPending] = useState(false);
-    const { dispatch } = useAuthContext();
+  const [isCancelled, setIsCancelled] = useState(false)
+  const [error, setError] = useState(null)
+  const [isPending, setIsPending] = useState(false)
+  const { dispatch } = useAuthContext()
 
-    const signup = async (email, password, displayName) => {
-        setError(null);
-        setIsPending(true);
+  const signup = async (email, password, displayName) => {
+    setError(null)
+    setIsPending(true)
+  
+    try {
+      // signup
+      const res = await projectAuth.createUserWithEmailAndPassword(email, password)
 
-        try {
-            const res = await projectAuth.createUserWithEmailAndPassword(
-                email,
-                password
-            );
+      if (!res) {
+        throw new Error('Could not complete signup')
+      }
 
-            if (!res) {
-                throw new Error('Could not complete signup');
-            }
+      // add display name to user
+      await res.user.updateProfile({ displayName })
 
-            await res.user.updateProfile({ displayName });
-            dispatch({ type: 'LOGIN', payload: res.user });
-            if (!isCancelled) {
-                setIsPending(false);
-                setError(null);
-            }
-        } catch (err) {
-            console.log(err.message);
-            if (!isCancelled) {
-                console.log(err.message);
-                setError(err.message);
-                setIsPending(false);
-            }
-        }
-    };
+      // dispatch login action
+      dispatch({ type: 'LOGIN', payload: res.user })
 
-    useEffect(() => {
-        return () => setIsCancelled(true);
-    }, []);
+      if (!isCancelled) {
+        setIsPending(false)
+        setError(null)
+      }
+    } 
+    catch(err) {
+      if (!isCancelled) {
+        setError(err.message)
+        setIsPending(false)
+      }
+    }
+  }
 
-    return {
-        signup,
-        error,
-        isPending,
-    };
-};
+  useEffect(() => {
+    return () => setIsCancelled(true)
+  }, [])
+
+  return { signup, error, isPending }
+}
