@@ -1,3 +1,10 @@
+![image](https://user-images.githubusercontent.com/7889219/181415004-a2bfc9f2-755d-452d-84eb-bf5bdd49e237.png)
+
+https://money-of-mine.web.app/
+
+made with Firebase and React
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
