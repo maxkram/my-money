@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/7889219/181415004-a2bfc9f2-755d-452d-84eb-bf5bdd49e237.png)
+![image](https://user-images.githubusercontent.com/7889219/181415208-fff886c1-dac2-4704-ae1a-1b210b5d6096.png)
 
 https://money-of-mine.web.app/
 
